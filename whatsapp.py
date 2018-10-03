@@ -57,12 +57,13 @@ class Bot:
             msg = webelement.find_element(By.XPATH, './/div[contains(@class, "copyable-text")]')
             msg_sender = msg.get_attribute('data-pre-plain-text')
             msg_text = msg.find_elements(By.XPATH, './/span[contains(@class, "selectable-text")]')[-1].text
-        except IndexError:
+        except IndexError as e:
             msg_text = ""
-        except Exception:
+            print('[DEBUG] {}'.format(str(e)))
+        except Exception as e:
             msg_sender = ""
             msg_text = ""
-
+            print('[DEBUG] {}'.format(str(e)))
         return msg_sender, msg_text
 
     def go_to_chat(self, chat):
@@ -92,9 +93,7 @@ class Bot:
                 .key_down(Keys.SHIFT)\
                 .send_keys(Keys.RETURN)\
                 .key_up(Keys.SHIFT)
-        #action.send_keys(msg)
         action.send_keys(Keys.RETURN)
-
         action.perform()
 
 
