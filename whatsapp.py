@@ -14,6 +14,11 @@ class Bot:
         self.driver.maximize_window()
 
     def get_qr(self):
+        """
+        Waits for the QR-code to be scanned.
+
+        :return: void
+        """
         self.driver.get('https://web.whatsapp.com/')
         wait_message = "Open WhatsApp on your phone"
         while wait_message in self.driver.page_source:
@@ -22,6 +27,11 @@ class Bot:
         return
 
     def get_last_message(self):
+        """
+        Retrieves the last message, and compares it against the last sender.
+
+        :return: string
+        """
         try:
             all_msgs = self.driver.find_elements(By.XPATH, '//*[@id="main"]//div[contains(@class, "message")]')
             if len(all_msgs) > 0:
@@ -37,6 +47,12 @@ class Bot:
             print('[DEBUG] {}'.format(str(e)))
 
     def fetch_information(self, webelement):
+        """
+        Fetch the autor and message out of an element.
+
+        :param webelement: Selenium Element
+        :return: string, string
+        """
         try:
             msg = webelement.find_element(By.XPATH, './/div[contains(@class, "copyable-text")]')
             msg_sender = msg.get_attribute('data-pre-plain-text')
@@ -50,7 +66,14 @@ class Bot:
         return msg_sender, msg_text
 
     def go_to_chat(self, chat):
+        """
+        Clicks on a chat
+
+        :param chat: string
+        :return: void
+        """
         self.driver.find_element(By.XPATH, '//*[@title="{}"]'.format(chat)).click()
+        return
 
     def sendmsg(self, msg):
         """
